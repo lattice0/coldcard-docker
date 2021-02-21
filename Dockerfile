@@ -15,9 +15,15 @@ RUN cd firmware \
 
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
-RUN sed -i '29 s/^/        #/' /home/project/firmware/unix/frozen-modules/pyb.py \
-&& sed -i "31,32 s/# *//" /home/project/firmware/unix/frozen-modules/pyb.py
+RUN echo "Applying corrections" \
+&& sed -i '29 s/^/        #/' /home/project/firmware/unix/frozen-modules/pyb.py \
+&& sed -i "31,32 s/# *//" /home/project/firmware/unix/frozen-modules/pyb.py \
+&& sed -i '1 i\import os'  /home/project/firmware/unix/frozen-modules/ffilib.py \
+&& sed -i '/if sys.platform == "linux":/c\        if sys.platform == "linux" or os.getenv("COLDCARD_LINUX")=="1":' /home/project/firmware/unix/frozen-modules/ffilib.py \
+&& cat /home/project/firmware/unix/frozen-modules/ffilib.py
 
 RUN cd firmware/unix; make setup && make
+
+ENV COLDCARD_LINUX=1
 
 COPY docker_init.sh /home/project/docker_init.sh
