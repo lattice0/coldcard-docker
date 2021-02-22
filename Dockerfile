@@ -27,3 +27,4 @@ RUN cd firmware/unix; make setup && make
 ENV COLDCARD_LINUX=1
 
 COPY docker_init.sh /home/project/docker_init.sh
+COPY docker_init_firstrun.sh /home/project/docker_init_firstrun.sh
