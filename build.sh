@@ -1,1 +1,1 @@
-sudo docker build -t coldcard .
+docker build -t coldcard .
